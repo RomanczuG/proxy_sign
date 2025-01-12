@@ -28,6 +28,8 @@ app.post("/sign", upload.any(), async (req, res) => {
     // We assume one file is named 'shortcut'.
     const shortcutFile = req.files.find(f => f.fieldname === 'shortcut');
 
+    console.log("Received shortcutName:", shortcutName);
+
     // 2. Create a new FormData to forward to the original signing service
     const formData = new FormData();
     formData.append("shortcutName", shortcutName);
@@ -52,6 +54,8 @@ app.post("/sign", upload.any(), async (req, res) => {
     const respBuffer = await response.arrayBuffer();
     // Some clients expect JSON, others expect raw bytes. Adjust as needed.
     // If your original code expects raw bytes (the signed .shortcut), do:
+
+    console.log("Response status:", response.status);
     res.status(response.status);
     res.setHeader("Content-Type", response.headers.get("content-type") || "application/octet-stream");
     return res.send(Buffer.from(respBuffer));
